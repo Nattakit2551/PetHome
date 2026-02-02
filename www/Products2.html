@@ -1,0 +1,244 @@
+<!doctype html>
+<html lang="th">
+<head>
+<meta charset="utf-8">
+<title>PetHome - ลูกสุนัขเฟรนช์บูลด็อก</title>
+
+<style>
+/* การตั้งค่าพื้นฐาน */
+body {
+    margin: 0;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    background: linear-gradient(135deg, #F3E5C7, #E1C699, #CFAE70);
+    background-attachment: fixed;
+}
+
+/* เอฟเฟกต์รูปภาพและปุ่มเมนู */
+.img-effect {
+    border-radius: 18px;
+    box-shadow: 0 8px 20px rgba(0,0,0,0.35);
+    transition: all 0.3s ease;
+}
+
+.img-effect:hover {
+    transform: translateY(-6px) scale(1.04);
+    box-shadow: 0 14px 30px rgba(0,0,0,0.45);
+}
+
+table { margin: auto; }
+td { padding: 10px; text-align: center; }
+
+/* กล่องรายละเอียดสินค้า */
+.product-box {
+    max-width: 1000px;
+    margin: 40px auto 80px;
+    background: rgba(255, 255, 255, 0.9);
+    border-radius: 30px;
+    padding: 40px;
+    display: flex;
+    gap: 40px;
+    box-shadow: 0 25px 50px rgba(0,0,0,0.25);
+    animation: fadeUp 0.8s ease;
+}
+
+.product-img {
+    width: 320px;
+    height: auto;
+    object-fit: cover;
+}
+
+.product-info { flex: 1; text-align: left; }
+
+.product-info h1 {
+    margin-top: 0;
+    font-size: 32px;
+    color: #5d4037;
+}
+
+.product-info p {
+    font-size: 16px;
+    line-height: 1.8;
+    color: #4e342e;
+}
+
+.price {
+    color: #E74C3C;
+    font-size: 40px;
+    font-weight: bold;
+    margin: 20px 0;
+}
+
+/* กลุ่มปุ่มกด */
+.btn-area {
+    display: flex;
+    gap: 15px;
+    margin-top: 20px;
+    flex-wrap: wrap;
+}
+
+.btn {
+    border: none;
+    border-radius: 40px;
+    padding: 14px 30px;
+    font-size: 16px;
+    font-weight: bold;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    color: #fff;
+    box-shadow: 0 10px 20px rgba(0,0,0,0.15);
+    transition: 0.3s;
+}
+
+.btn:hover { transform: translateY(-5px); box-shadow: 0 15px 25px rgba(0,0,0,0.2); }
+
+.buy { background: linear-gradient(135deg, #00C853, #2ECC71); }
+.cart { background: linear-gradient(135deg, #FBC02D, #F9A825); }
+.fav { background: #fff; color: #E74C3C; border: 1px solid #E74C3C; }
+.back { background: linear-gradient(135deg, #5E35B1, #673AB7); }
+
+@keyframes fadeUp {
+    from { opacity: 0; transform: translateY(40px); }
+    to { opacity: 1; transform: translateY(0); }
+}
+</style>
+
+<script>
+/* ฟังก์ชันสลับรูปภาพของ Adobe Dreamweaver (ปรับ Path เรียบร้อย) */
+function MM_swapImgRestore() {
+    var i,x,a=document.MM_sr; for(i=0;a&&i<a.length&&(x=a[i])&&x.oSrc;i++) x.src=x.oSrc;
+}
+function MM_findObj(n, d) {
+    var p,i,x; if(!d) d=document; if((p=n.indexOf("?"))>0&&parent.frames.length) {
+    d=parent.frames[n.substring(p+1)].document; n=n.substring(0,p);}
+    if(!(x=d[n])&&d.all) x=d.all[n]; for (i=0;!x&&i<d.forms.length;i++) x=d.forms[i][n];
+    if(!x && d.getElementById) x=d.getElementById(n); return x;
+}
+function MM_swapImage() {
+    var i,j=0,x,a=MM_swapImage.arguments; document.MM_sr=new Array; for(i=0;i<(a.length-2);i+=3)
+    if ((x=MM_findObj(a[i]))!=null){document.MM_sr[j++]=x; if(!x.oSrc) x.oSrc=x.src; x.src=a[i+2];}
+}
+
+/* ระบบตะกร้าสินค้าและรายการโปรด */
+function buyNow(btn) {
+    const product = {
+        id: btn.dataset.id,
+        name: btn.dataset.name,
+        price: btn.dataset.price,
+        img: btn.dataset.img
+    };
+    let cart = JSON.parse(localStorage.getItem("petCart")) || [];
+    if(!cart.find(item => item.id === product.id)) {
+        cart.push(product);
+        localStorage.setItem("petCart", JSON.stringify(cart));
+    }
+    window.location.href = "Make payment.html";
+}
+
+function addToCart(btn) {
+    const product = {
+        id: btn.dataset.id,
+        name: btn.dataset.name,
+        price: btn.dataset.price,
+        img: btn.dataset.img
+    };
+    let cart = JSON.parse(localStorage.getItem("petCart")) || [];
+    if(cart.find(item => item.id === product.id)) {
+        alert("สินค้านี้อยู่ในตะกร้าแล้ว 🐾");
+    } else {
+        cart.push(product);
+        localStorage.setItem("petCart", JSON.stringify(cart));
+        alert("เพิ่มสินค้าลงตะกร้าแล้ว 🛒");
+    }
+    window.location.href = "Shopping Cart.html";
+}
+
+function addToFavorites(btn) {
+    const product = {
+        id: btn.dataset.id,
+        name: btn.dataset.name,
+        price: btn.dataset.price,
+        img: btn.dataset.img
+    };
+    let fav = JSON.parse(localStorage.getItem("petFavorites")) || [];
+    if(fav.find(item => item.id === product.id)) {
+        alert("สินค้านี้อยู่ในรายการโปรดแล้ว ❤️");
+    } else {
+        fav.push(product);
+        localStorage.setItem("petFavorites", JSON.stringify(fav));
+        alert("เพิ่มลงรายการโปรดแล้ว ❤️");
+    }
+    window.location.href = "Favorites.html";
+}
+</script>
+</head>
+
+<body>
+<table width="100%">
+    <tr>
+        <td><img src="Products.png" width="1465" height="200" class="img-effect"></td>
+    </tr>
+</table>
+
+<table>
+    <tr>
+        <td><a href="index.html" onMouseOver="MM_swapImage('m1','','Home/2.png',1)" onMouseOut="MM_swapImgRestore()"><img src="Home/1.png" id="m1" class="img-effect"></a></td>
+        <td><a href="Search.html" onMouseOver="MM_swapImage('m2','','Search/2.png',1)" onMouseOut="MM_swapImgRestore()"><img src="Search/1.png" id="m2" class="img-effect"></a></td>
+        <td><a href="Products.html" onMouseOver="MM_swapImage('m3','','products/2.png',1)" onMouseOut="MM_swapImgRestore()"><img src="products/1.png" id="m3" class="img-effect"></a></td>
+        <td><a href="New Products.html" onMouseOver="MM_swapImage('m4','','new products/2.png',1)" onMouseOut="MM_swapImgRestore()"><img src="new products/1.png" id="m4" class="img-effect"></a></td>
+        <td><a href="Promotion.html" onMouseOver="MM_swapImage('m5','','promotion/2.png',1)" onMouseOut="MM_swapImgRestore()"><img src="promotion/1.png" id="m5" class="img-effect"></a></td>
+        <td><a href="Contact us.html" onMouseOver="MM_swapImage('m6','','Contact us/2.png',1)" onMouseOut="MM_swapImgRestore()"><img src="Contact us/1.png" id="m6" class="img-effect"></a></td>
+        <td><a href="Review.html" onMouseOver="MM_swapImage('m7','','review (1)/2.png',1)" onMouseOut="MM_swapImgRestore()"><img src="review (1)/1.png" id="m7" class="img-effect"></a></td>
+        <td><a href="Favorites.html" onMouseOver="MM_swapImage('m8','','Favorites/2.png',1)" onMouseOut="MM_swapImgRestore()"><img src="Favorites/1.png" id="m8" class="img-effect"></a></td>
+        <td><a href="Shopping Cart.html" onMouseOver="MM_swapImage('m9','','Shopping cart/2.png',1)" onMouseOut="MM_swapImgRestore()"><img src="Shopping cart/1.png" id="m9" class="img-effect"></a></td>
+        <td><a href="Make payment.html" onMouseOver="MM_swapImage('m10','','PayMent (1)/2.png',1)" onMouseOut="MM_swapImgRestore()"><img src="PayMent (1)/1.png" id="m10" class="img-effect"></a></td>
+    </tr>
+</table>
+
+<div class="product-box">
+    <img src="New folder/2.jpg" class="product-img img-effect">
+
+    <div class="product-info">
+        <h1>ลูกสุนัขเฟรนช์บูลด็อก (หญิง)</h1>
+        <p>
+            <strong>ข้อมูลสายพันธุ์</strong><br>
+            เฟรนช์บูลด็อก ลายวัว (Cow Spotted) กระดูกใหญ่ หน้าสั้นสวย<br><br>
+            <strong>รายละเอียดสุขภาพ</strong><br>
+            ✅ รับวัคซีนครบตามกำหนด<br>
+            ✅ ถ่ายพยาธิแล้ว<br>
+            ✅ มีใบรับรองสุขภาพจากสัตวแพทย์<br>
+            ✅ ประกันสุขภาพหลังย้ายบ้าน 7 วัน
+        </p>
+
+        <div class="price">฿15,000</div>
+
+        <div class="btn-area">
+            <button class="btn buy" 
+                data-id="p2" 
+                data-name="ลูกสุนัขเฟรนช์บูลด็อก" 
+                data-price="15000" 
+                data-img="New folder/2.jpg" 
+                onclick="buyNow(this)">🛒 BUY NOW</button>
+
+            <button class="btn cart" 
+                data-id="p2" 
+                data-name="ลูกสุนัขเฟรนช์บูลด็อก" 
+                data-price="15000" 
+                data-img="New folder/2.jpg" 
+                onclick="addToCart(this)">🧺 CART</button>
+
+            <button class="btn fav" 
+                data-id="p2" 
+                data-name="ลูกสุนัขเฟรนช์บูลด็อก" 
+                data-price="15000" 
+                data-img="New folder/2.jpg" 
+                onclick="addToFavorites(this)">❤️</button>
+            
+            <button class="btn back" onclick="history.back()">↩ BACK</button>
+        </div>
+    </div>
+</div>
+
+</body>
+</html>

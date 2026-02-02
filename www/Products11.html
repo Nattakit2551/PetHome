@@ -1,0 +1,208 @@
+<!doctype html>
+<html lang="th">
+<head>
+<meta charset="utf-8">
+<title>PetHome - แมวสก็อตติชแท้</title>
+
+<style>
+body{
+  margin:0;
+  font-family: Arial, sans-serif;
+  background: linear-gradient(135deg,#F3E5C7,#E1C699,#CFAE70);
+  background-attachment: fixed;
+}
+.img-effect{
+  border-radius:20px;
+  box-shadow:0 8px 20px rgba(0,0,0,0.35);
+  transition:0.3s;
+}
+.img-effect:hover{
+  transform:translateY(-6px) scale(1.04);
+  box-shadow:0 14px 30px rgba(0,0,0,0.45);
+}
+table{margin:auto;}
+td{padding:10px;text-align:center;}
+
+.product-box{
+  max-width:1000px;
+  margin:40px auto 80px;
+  background:rgba(255,255,255,0.9);
+  border-radius:30px;
+  padding:40px;
+  display:flex;
+  gap:40px;
+  box-shadow:0 25px 50px rgba(0,0,0,0.25);
+  animation: productFloat 0.9s ease-out forwards;
+}
+
+@keyframes productFloat{
+  from{ opacity:0; transform:translateY(60px); }
+  to{ opacity:1; transform:translateY(0); }
+}
+
+.product-img{ width:300px; height: auto; object-fit: cover; }
+
+.product-info { flex: 1; text-align: left; }
+.product-info h1{ margin-top:0; font-size:28px; color: #5D4037; }
+.product-info h2{ font-size: 18px; color: #8D6E63; margin-top: 15px; }
+.product-info p{ font-size:16px; line-height:1.7; color: #4E342E; margin: 5px 0; }
+
+.price{
+  font-size:36px;
+  font-weight:bold;
+  color:#E53935;
+  margin:20px 0;
+}
+
+.btn-area{ display:flex; gap:18px; margin-top:20px; flex-wrap: wrap; }
+.btn{
+  border:none;
+  border-radius:40px;
+  padding:14px 26px;
+  font-size:16px;
+  cursor:pointer;
+  color:#fff;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  box-shadow:0 10px 20px rgba(0,0,0,0.25);
+  transition: 0.3s;
+}
+.btn:hover { transform: translateY(-3px); }
+
+.buy{background: linear-gradient(135deg, #00C853, #2ECC71);}
+.cart{background: linear-gradient(135deg, #F9A825, #FBC02D);}
+.fav{background:#fff; color:red; border: 1px solid red;}
+.back{background: linear-gradient(135deg, #673AB7, #5E35B1);}
+</style>
+
+<script>
+function MM_swapImgRestore() {
+  var i,x,a=document.MM_sr; for(i=0;a&&i<a.length&&(x=a[i])&&x.oSrc;i++) x.src=x.oSrc;
+}
+function MM_findObj(n, d) {
+  var p,i,x; if(!d) d=document; if((p=n.indexOf("?"))>0&&parent.frames.length) {
+  d=parent.frames[n.substring(p+1)].document; n=n.substring(0,p);}
+  if(!(x=d[n])&&d.all) x=d.all[n]; for (i=0;!x&&i<d.forms.length;i++) x=d.forms[i][n];
+  if(!x && d.getElementById) x=d.getElementById(n); return x;
+}
+function MM_swapImage() {
+  var i,j=0,x,a=MM_swapImage.arguments; document.MM_sr=new Array; for(i=0;i<(a.length-2);i+=3)
+  if ((x=MM_findObj(a[i]))!=null){document.MM_sr[j++]=x; if(!x.oSrc) x.oSrc=x.src; x.src=a[i+2];}
+}
+
+// ระบบจัดการสินค้า
+function buyNow(btn){
+    addToCart(btn);
+    window.location.href = "Make payment.html";
+}
+
+function addToCart(btn){
+    const product = {
+        id: btn.dataset.id,
+        name: btn.dataset.name,
+        price: btn.dataset.price,
+        img: btn.dataset.img
+    };
+    let cart = JSON.parse(localStorage.getItem("petCart")) || [];
+    if(!cart.find(item => item.id === product.id)){
+        cart.push(product);
+        localStorage.setItem("petCart", JSON.stringify(cart));
+    }
+    if(event.target.classList.contains('cart')) {
+        alert("เพิ่มลงตะกร้าแล้ว 🛒");
+        window.location.href = "Shopping Cart.html";
+    }
+}
+
+function addToFavorites(btn){
+    const product = {
+        id: btn.dataset.id,
+        name: btn.dataset.name,
+        price: btn.dataset.price,
+        img: btn.dataset.img
+    };
+    let fav = JSON.parse(localStorage.getItem("petFavorites")) || [];
+    if(fav.find(item => item.id === product.id)){
+        alert("สินค้านี้อยู่ในรายการโปรดแล้ว ❤️");
+        return;
+    }
+    fav.push(product);
+    localStorage.setItem("petFavorites", JSON.stringify(fav));
+    alert("เพิ่มลงรายการโปรดแล้ว ❤️");
+    window.location.href = "Favorites.html";
+}
+</script>
+</head>
+
+<body>
+<table width="100%">
+  <tr>
+    <td><img src="Products.png" width="1465" height="200" class="img-effect"></td>
+  </tr>
+</table>
+
+<table>
+<tr>
+<td><a href="index.html" onMouseOver="MM_swapImage('m1','','Home/2.png',1)" onMouseOut="MM_swapImgRestore()"><img src="Home/1.png" id="m1" class="img-effect"></a></td>
+<td><a href="Search.html" onMouseOver="MM_swapImage('m2','','Search/2.png',1)" onMouseOut="MM_swapImgRestore()"><img src="Search/1.png" id="m2" class="img-effect"></a></td>
+<td><a href="Products.html" onMouseOver="MM_swapImage('m3','','products/2.png',1)" onMouseOut="MM_swapImgRestore()"><img src="products/1.png" id="m3" class="img-effect"></a></td>
+<td><a href="New Products.html" onMouseOver="MM_swapImage('m4','','new products/2.png',1)" onMouseOut="MM_swapImgRestore()"><img src="new products/1.png" id="m4" class="img-effect"></a></td>
+<td><a href="Promotion.html" onMouseOver="MM_swapImage('m5','','promotion/2.png',1)" onMouseOut="MM_swapImgRestore()"><img src="promotion/1.png" id="m5" class="img-effect"></a></td>
+<td><a href="Contact us.html" onMouseOver="MM_swapImage('m6','','Contact us/2.png',1)" onMouseOut="MM_swapImgRestore()"><img src="Contact us/1.png" id="m6" class="img-effect"></a></td>
+<td><a href="Review.html" onMouseOver="MM_swapImage('m7','','review (1)/2.png',1)" onMouseOut="MM_swapImgRestore()"><img src="review (1)/1.png" id="m7" class="img-effect"></a></td>
+<td><a href="Favorites.html" onMouseOver="MM_swapImage('m8','','Favorites/2.png',1)" onMouseOut="MM_swapImgRestore()"><img src="Favorites/1.png" id="m8" class="img-effect"></a></td>
+<td><a href="Shopping Cart.html" onMouseOver="MM_swapImage('m9','','Shopping cart/2.png',1)" onMouseOut="MM_swapImgRestore()"><img src="Shopping cart/1.png" id="m9" class="img-effect"></a></td>
+<td><a href="Make payment.html" onMouseOver="MM_swapImage('m10','','PayMent (1)/2.png',1)" onMouseOut="MM_swapImgRestore()"><img src="PayMent (1)/1.png" id="m10" class="img-effect"></a></td>
+</tr>
+</table>
+
+<div class="product-box">
+<img src="New folder/11.jpg" class="product-img img-effect">
+
+<div class="product-info">
+<h1>แมวสก็อตติชแท้ (เพศผู้)</h1>
+
+<h2>คุณสมบัติเด่น</h2>
+<p>สายพันธุ์ : สก็อตติช โฟลด์ (Scottish Fold)</p>
+
+<h2>รายละเอียดและของแถม</h2>
+<p>✅ ใบวัคซีน 1 เล่ม (ฉีดวัคซีน/ถ่ายพยาธิ/หยอดหลังคอเรียบร้อย)</p>
+<p>✅ ฟรี! อาหารแมวเกรดพรีเมียมแบ่ง 1 ถุง</p>
+<p>✅ ฟรี! กระเป๋าเดินทางสำหรับน้องแมว 1 ใบ</p>
+<p>✅ บริการทำความสะอาดตัว (อาบน้ำแห้ง/ตัดเล็บ) ก่อนส่งมอบ</p>
+
+<div class="price">฿7,000</div>
+
+<div class="btn-area">
+<button class="btn buy" 
+    data-id="p11" 
+    data-name="แมวสก็อตติชแท้ ชาย" 
+    data-price="7000" 
+    data-img="New folder/11.jpg" 
+    onclick="buyNow(this)">🛒 BUY NOW</button>
+
+<button class="btn cart"
+    data-id="p11"
+    data-name="แมวสก็อตติชแท้ ชาย"
+    data-price="7000"
+    data-img="New folder/11.jpg"
+    onclick="addToCart(this)">
+    🧺 CART
+</button>
+
+<button class="btn fav"
+    data-id="p11"
+    data-name="แมวสก็อตติชแท้ ชาย"
+    data-price="7000"
+    data-img="New folder/11.jpg"
+    onclick="addToFavorites(this)">
+    ❤️
+</button>
+<button class="btn back" onclick="history.back()">↩ BACK</button>
+</div>
+</div>
+</div>
+
+</body>
+</html>
