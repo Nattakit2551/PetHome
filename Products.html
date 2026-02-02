@@ -1,0 +1,205 @@
+<!doctype html>
+<html>
+<head>
+<meta charset="utf-8">
+<title>PetHome</title>
+
+<style>
+body {
+    background: linear-gradient(135deg,#F3E5C7,#E1C699,#CFAE70);
+    background-attachment: fixed;
+    font-family: 'Segoe UI', Arial, sans-serif;
+    margin: 0;
+}
+
+table {
+    margin: auto;
+}
+td, th {
+    padding: 10px;
+    text-align: center;
+}
+
+.header-effect {
+    border-radius: 25px;
+    box-shadow: 0 10px 25px rgba(0,0,0,0.15);
+    transition: all 0.4s ease;
+}
+
+.menu-btn-oval {
+    border-radius: 50px;
+    transition: all 0.3s ease;
+    box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+}
+
+.menu-btn-oval:hover {
+    transform: translateY(-5px) scale(1.05);
+    box-shadow: 0 8px 20px rgba(0,0,0,0.2);
+}
+
+.product-card {
+    background: #ffffff;
+    border-radius: 30px;
+    padding: 20px;
+    box-shadow: 0 10px 20px rgba(0,0,0,0.1);
+    transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+    width: 240px;
+    position: relative;
+    overflow: hidden;
+    border: 2px solid transparent;
+}
+
+.product-card:hover {
+    transform: translateY(-12px);
+    box-shadow: 0 20px 40px rgba(0,0,0,0.2);
+    border: 2px solid #E1C699;
+}
+
+.img-product {
+    border-radius: 20px;
+    transition: all 0.5s ease;
+    object-fit: cover;
+}
+
+.product-card:hover .img-product {
+    transform: scale(1.08);
+}
+
+.product-card .name {
+    margin-top: 15px;
+    font-weight: 700;
+    color: #5d4037;
+    height: 45px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.price-box {
+    margin-top: 10px;
+    padding: 10px;
+    background: #fdf5e6;
+    border-radius: 15px;
+}
+
+.product-card .price {
+    color: #E53935;
+    font-size: 1.3rem;
+    font-weight: 800;
+}
+
+.detail-btn {
+    margin-top: 15px;
+    background: #8b6e4b;
+    color: white;
+    border: none;
+    padding: 10px 20px;
+    border-radius: 50px;
+    font-size: 0.9rem;
+    font-weight: bold;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    width: 85%;
+}
+
+.detail-btn:hover {
+    background: #5d4037;
+    width: 95%;
+}
+
+h1 {
+    text-align: center;
+    font-size: 3rem;
+    color: #5d4037;
+    margin: 40px 0;
+}
+</style>
+
+<script type="text/javascript">
+function MM_swapImgRestore() {
+  var i,x,a=document.MM_sr;
+  for(i=0;a&&i<a.length&&(x=a[i])&&x.oSrc;i++) x.src=x.oSrc;
+}
+function MM_preloadImages() {
+  var d=document;
+  if(d.images){
+    if(!d.MM_p) d.MM_p=new Array();
+    var i,j=d.MM_p.length,a=MM_preloadImages.arguments;
+    for(i=0; i<a.length; i++)
+      if (a[i].indexOf("#")!=0){
+        d.MM_p[j]=new Image;
+        d.MM_p[j++].src=a[i];
+      }
+  }
+}
+function MM_findObj(n, d) {
+  var p,i,x;
+  if(!d) d=document;
+  if((p=n.indexOf("?"))>0&&parent.frames.length){
+    d=parent.frames[n.substring(p+1)].document;
+    n=n.substring(0,p);
+  }
+  if(!(x=d[n])&&d.all) x=d.all[n];
+  for (i=0;!x&&i<d.forms.length;i++) x=d.forms[i][n];
+  if(!x && d.getElementById) x=d.getElementById(n);
+  return x;
+}
+function MM_swapImage() {
+  var i,j=0,x,a=MM_swapImage.arguments;
+  document.MM_sr=new Array;
+  for(i=0;i<(a.length-2);i+=3)
+    if ((x=MM_findObj(a[i]))!=null){
+      document.MM_sr[j++]=x;
+      if(!x.oSrc) x.oSrc=x.src;
+      x.src=a[i+2];
+    }
+}
+</script>
+</head>
+
+<body onLoad="MM_preloadImages('../Home/2.png','../Search/2.png','../products/2.png','../new products/2.png','../promotion/2.png','../Contact us/2.png','../review (1)/2.png','../Favorites/2.png','../Shopping cart/2.png','../PayMent (1)/2.png')">
+
+<header>
+<table><tr><td><a href="index.html"><img src="Products.png" width="1464" height="200" class="header-effect"></a></td></tr></table>
+
+<table>
+  <tr>
+    <td><a href="index.html" onMouseOver="MM_swapImage('m1','','../Home/2.png',1)" onMouseOut="MM_swapImgRestore()"><img src="../Home/1.png" id="m1" width="140" height="40" class="menu-btn-oval"></a></td>
+    <td><a href="Search.html" onMouseOver="MM_swapImage('m2','','../Search/2.png',1)" onMouseOut="MM_swapImgRestore()"><img src="../Search/1.png" id="m2" width="140" height="40" class="menu-btn-oval"></a></td>
+    <td><a href="Products.html" onMouseOver="MM_swapImage('m3','','../products/2.png',1)" onMouseOut="MM_swapImgRestore()"><img src="../products/1.png" id="m3" width="140" height="40" class="menu-btn-oval"></a></td>
+    <td><a href="New Products.html" onMouseOver="MM_swapImage('m4','','../new products/2.png',1)" onMouseOut="MM_swapImgRestore()"><img src="../new products/1.png" id="m4" width="140" height="40" class="menu-btn-oval"></a></td>
+    <td><a href="Promotion.html" onMouseOver="MM_swapImage('m5','','../promotion/2.png',1)" onMouseOut="MM_swapImgRestore()"><img src="../promotion/1.png" id="m5" width="140" height="40" class="menu-btn-oval"></a></td>
+    <td><a href="Contact us.html" onMouseOver="MM_swapImage('m6','','../Contact us/2.png',1)" onMouseOut="MM_swapImgRestore()"><img src="../Contact us/1.png" id="m6" width="140" height="40" class="menu-btn-oval"></a></td>
+    <td><a href="Review.html" onMouseOver="MM_swapImage('m7','','../review (1)/2.png',1)" onMouseOut="MM_swapImgRestore()"><img src="../review (1)/1.png" id="m7" width="140" height="40" class="menu-btn-oval"></a></td>
+    <td><a href="Favorites.html" onMouseOver="MM_swapImage('m8','','../Favorites/2.png',1)" onMouseOut="MM_swapImgRestore()"><img src="../Favorites/1.png" id="m8" width="140" height="40" class="menu-btn-oval"></a></td>
+    <td><a href="Shopping Cart.html" onMouseOver="MM_swapImage('m9','','../Shopping cart/2.png',1)" onMouseOut="MM_swapImgRestore()"><img src="../Shopping cart/1.png" id="m9" width="140" height="40" class="menu-btn-oval"></a></td>
+    <td><a href="Make payment.html" onMouseOver="MM_swapImage('m10','','../PayMent (1)/2.png',1)" onMouseOut="MM_swapImgRestore()"><img src="../PayMent (1)/1.png" id="m10" width="140" height="40" class="menu-btn-oval"></a></td>
+  </tr>
+</table>
+
+<h1>สินค้าของเรา</h1>
+
+<table border="0" width="1200">
+  <tr>
+    <td><div class="product-card"><a href="Products1.html"><img src="../New folder/1.jpg" width="180" height="240" class="img-product"></a><div class="name">ลูกสุนัขโกลเด้นแท้</div><div class="price-box"><div class="price">฿ 6,000</div></div><button class="detail-btn" onclick="location.href='Products1.html'">ดูรายละเอียด</button></div></td>
+    <td><div class="product-card"><a href="Products2.html"><img src="../New folder/2.jpg" width="213" height="240" class="img-product"></a><div class="name">เฟรนบลูด็อก หญิง ลายวัว</div><div class="price-box"><div class="price">฿ 15,000</div></div><button class="detail-btn" onclick="location.href='Products2.html'">ดูรายละเอียด</button></div></td>
+    <td><div class="product-card"><a href="Products3.html"><img src="../New folder/3.jpg" width="180" height="240" class="img-product"></a><div class="name">British Shorthair</div><div class="price-box"><div class="price">฿ 35,000</div></div><button class="detail-btn" onclick="location.href='Products3.html'">ดูรายละเอียด</button></div></td>
+    <td><div class="product-card"><a href="Products4.html"><img src="../New folder/4.jpg" width="180" height="240" class="img-product"></a><div class="name">ลูกแมวเปอร์เซีย</div><div class="price-box"><div class="price">฿ 2,900</div></div><button class="detail-btn" onclick="location.href='Products4.html'">ดูรายละเอียด</button></div></td>
+  </tr>
+  <tr>
+    <td><div class="product-card"><a href="Products5.html"><img src="../New folder/5.jpg" width="180" height="240" class="img-product"></a><div class="name">ชิวาวาแท้ ตา 2 สี</div><div class="price-box"><div class="price">฿ 3,500</div></div><button class="detail-btn" onclick="location.href='Products5.html'">ดูรายละเอียด</button></div></td>
+    <td><div class="product-card"><a href="Products6.html"><img src="../New folder/6.jpg" width="214" height="240" class="img-product"></a><div class="name">ลาบราดอร์แท้ เมีย</div><div class="price-box"><div class="price">฿ 5,000</div></div><button class="detail-btn" onclick="location.href='Products6.html'">ดูรายละเอียด</button></div></td>
+    <td><div class="product-card"><a href="Products7.html"><img src="../New folder/7.jpg" width="180" height="240" class="img-product"></a><div class="name">ปอมแท้</div><div class="price-box"><div class="price">฿ 4,900</div></div><button class="detail-btn" onclick="location.href='Products7.html'">ดูรายละเอียด</button></div></td>
+    <td><div class="product-card"><a href="Products8.html"><img src="../New folder/8.jpg" width="180" height="240" class="img-product"></a><div class="name">ริงเนค เคลียเทล</div><div class="price-box"><div class="price">฿ 10,000</div></div><button class="detail-btn" onclick="location.href='Products8.html'">ดูรายละเอียด</button></div></td>
+  </tr>
+  <tr>
+    <td><div class="product-card"><a href="Products9.html"><img src="../New folder/9.jpg" width="180" height="240" class="img-product"></a><div class="name">กระต่าย HL</div><div class="price-box"><div class="price">฿ 1,400</div></div><button class="detail-btn" onclick="location.href='Products9.html'">ดูรายละเอียด</button></div></td>
+    <td><div class="product-card"><a href="Products10.html"><img src="../New folder/10.jpg" width="213" height="240" class="img-product"></a><div class="name">สก็อตติชผสมอเมริกัน หญิง</div><div class="price-box"><div class="price">฿ 2,000</div></div><button class="detail-btn" onclick="location.href='Products10.html'">ดูรายละเอียด</button></div></td>
+    <td><div class="product-card"><a href="Products11.html"><img src="../New folder/11.jpg" width="180" height="240" class="img-product"></a><div class="name">สก็อตติชผสมอเมริกัน หญิง</div><div class="price-box"><div class="price">฿ 7,000</div></div><button class="detail-btn" onclick="location.href='Products11.html'">ดูรายละเอียด</button></div></td>
+    <td><div class="product-card"><a href="Products12.html"><img src="../New folder/12.jpg" width="180" height="240" class="img-product"></a><div class="name">แมวบริติช ช็อตแฮร์</div><div class="price-box"><div class="price">฿ 10,000</div></div><button class="detail-btn" onclick="location.href='Products12.html'">ดูรายละเอียด</button></div></td>
+  </tr>
+</table>
+
+</header>
+</body>
+</html>

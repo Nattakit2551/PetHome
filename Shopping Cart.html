@@ -1,0 +1,398 @@
+<!doctype html>
+<html lang="th">
+<head>
+<meta charset="utf-8">
+<title>PetHome - Shopping Cart</title>
+<link href="https://fonts.googleapis.com/css2?family=Kanit:wght@300;400;600&display=swap" rel="stylesheet">
+
+<style>
+body{
+    background: linear-gradient(135deg,#F3E5C7,#E1C699,#CFAE70);
+    background-attachment: fixed;
+    font-family: 'Kanit', sans-serif;
+    margin:0;
+    color: #333;
+}
+table{ margin:auto; }
+td{ padding:10px; text-align:center; }
+.img-effect{
+    border-radius:20px;
+    box-shadow:0 8px 20px rgba(0,0,0,.35);
+    transition:.3s;
+    cursor:pointer;
+}
+.img-effect:hover{
+    transform: translateY(-8px) scale(1.05);
+    box-shadow:0 14px 30px rgba(0,0,0,.5);
+}
+
+.main-wrapper {
+    max-width: 1200px;
+    margin: 20px auto 60px;
+    padding: 0 20px;
+}
+
+.cart-title {
+    font-size: 24px;
+    font-weight: bold;
+    color: #5d4037;
+    margin-bottom: 20px;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.shopee-layout {
+    display: grid;
+    grid-template-columns: 2.5fr 1fr; 
+    gap: 20px;
+    align-items: start;
+}
+
+.cart-items-panel {
+    background: #fff;
+    border-radius: 8px;
+    box-shadow: 0 2px 10px rgba(0,0,0,0.05);
+    overflow: hidden;
+}
+
+.cart-header {
+    display: grid;
+    grid-template-columns: 4fr 1.5fr 1fr;
+    padding: 15px 20px;
+    background: #fff;
+    border-bottom: 1px solid #f0f0f0;
+    font-weight: 600;
+    color: #888;
+    font-size: 14px;
+}
+
+.cart-item-row {
+    display: grid;
+    grid-template-columns: 4fr 1.5fr 1fr;
+    padding: 20px;
+    border-bottom: 1px solid #f5f5f5;
+    align-items: center;
+    transition: 0.2s;
+}
+
+.cart-item-row:hover {
+    background-color: #fafafa;
+}
+
+.item-product {
+    display: flex;
+    gap: 15px;
+    align-items: center;
+}
+
+.item-img {
+    width: 80px;
+    height: 80px;
+    border-radius: 4px;
+    object-fit: cover;
+    border: 1px solid #eee;
+}
+
+.item-details h4 {
+    margin: 0 0 5px 0;
+    font-size: 16px;
+    color: #333;
+}
+
+.item-details span {
+    font-size: 12px;
+    color: #999;
+    border: 1px solid #ddd;
+    padding: 2px 6px;
+    border-radius: 4px;
+}
+
+.item-price {
+    font-size: 18px;
+    font-weight: bold;
+    color: #ee4d2d;
+}
+
+.item-action {
+    text-align: right;
+}
+
+.btn-delete {
+    background: none;
+    border: none;
+    color: #333;
+    cursor: pointer;
+    font-size: 14px;
+}
+.btn-delete:hover {
+    color: #ee4d2d;
+    text-decoration: underline;
+}
+
+.cart-summary-panel {
+    background: #fff;
+    border-radius: 8px;
+    box-shadow: 0 2px 10px rgba(0,0,0,0.05);
+    padding: 20px;
+    position: sticky;
+    top: 20px;
+}
+
+.summary-row {
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 15px;
+    font-size: 14px;
+    color: #666;
+}
+
+.summary-row.total {
+    margin-top: 20px;
+    padding-top: 20px;
+    border-top: 1px dashed #ddd;
+    font-size: 18px;
+    color: #333;
+    font-weight: bold;
+    align-items: center;
+}
+
+.summary-row.total span:last-child {
+    font-size: 26px;
+    color: #ee4d2d;
+}
+
+.btn-checkout {
+    width: 100%;
+    background: linear-gradient(90deg, #ff7337, #ee4d2d);
+    color: #fff;
+    border: none;
+    padding: 15px;
+    font-size: 16px;
+    font-weight: bold;
+    border-radius: 4px;
+    cursor: pointer;
+    margin-top: 15px;
+    transition: 0.3s;
+    box-shadow: 0 4px 10px rgba(238, 77, 45, 0.3);
+}
+
+.btn-checkout:hover {
+    opacity: 0.95;
+    transform: translateY(-2px);
+}
+
+.btn-clear {
+    width: 100%;
+    background: #fff;
+    border: 1px solid #ddd;
+    color: #555;
+    padding: 10px;
+    border-radius: 4px;
+    margin-top: 10px;
+    cursor: pointer;
+}
+.btn-clear:hover {
+    background: #f5f5f5;
+}
+
+.empty-cart {
+    text-align: center;
+    padding: 50px;
+    color: #888;
+    background: #fff;
+    border-radius: 8px;
+}
+.empty-cart img {
+    width: 100px;
+    opacity: 0.5;
+    margin-bottom: 20px;
+}
+
+</style>
+
+<script>
+function MM_swapImgRestore() {
+  var i,x,a=document.MM_sr;
+  for(i=0;a&&i<a.length&&(x=a[i])&&x.oSrc;i++) x.src=x.oSrc;
+}
+function MM_preloadImages() {
+  var d=document; if(d.images){ if(!d.MM_p) d.MM_p=new Array();
+    var i,j=d.MM_p.length,a=MM_preloadImages.arguments; for(i=0; i<a.length; i++)
+    if (a[i].indexOf("#")!=0){ d.MM_p[j]=new Image; d.MM_p[j++].src=a[i];}}
+}
+function MM_findObj(n, d) {
+  var p,i,x; if(!d) d=document; if((p=n.indexOf("?"))>0&&parent.frames.length) {
+    d=parent.frames[n.substring(p+1)].document; n=n.substring(0,p);}
+  if(!(x=d[n])&&d.all) x=d.all[n]; for (i=0;!x&&i<d.forms.length;i++) x=d.forms[i][n];
+  if(!x && d.getElementById) x=d.getElementById(n); return x;
+}
+function MM_swapImage() {
+  var i,j=0,x,a=MM_swapImage.arguments; document.MM_sr=new Array; for(i=0;i<(a.length-2);i+=3)
+   if ((x=MM_findObj(a[i]))!=null){document.MM_sr[j++]=x; if(!x.oSrc) x.oSrc=x.src; x.src=a[i+2];}
+}
+
+function displayCart() {
+    let cart = JSON.parse(localStorage.getItem("petCart")) || [];
+    const container = document.getElementById("cart-items-area");
+    const summaryCount = document.getElementById("summary-count");
+    const summaryTotal = document.getElementById("summary-total");
+    const summarySubtotal = document.getElementById("summary-subtotal");
+
+    container.innerHTML = "";
+    
+    if (cart.length === 0) {
+        container.innerHTML = `
+            <div class="empty-cart">
+                <img src="https://cdn-icons-png.flaticon.com/512/2038/2038854.png" alt="Empty">
+                <h3>รถเข็นว่างเปล่า</h3>
+                <p>ยังไม่มีสินค้าในรถเข็นของคุณ</p>
+                <a href="Products.html" style="color:#ee4d2d; text-decoration:none;">ไปเลือกซื้อสินค้ากันเลย</a>
+            </div>`;
+        summaryCount.innerText = "0";
+        summaryTotal.innerText = "฿0";
+        summarySubtotal.innerText = "฿0";
+        
+        document.querySelector('.cart-summary-panel').style.opacity = '0.5';
+        document.querySelector('.btn-checkout').disabled = true;
+        return;
+    }
+
+    document.querySelector('.cart-summary-panel').style.opacity = '1';
+    document.querySelector('.btn-checkout').disabled = false;
+
+    let total = 0;
+
+    cart.forEach((item, index) => {
+        
+        let priceNum = 0;
+        if(typeof item.price === 'string'){
+            priceNum = parseInt(item.price.replace(/[^0-9]/g, "")) || 0;
+        } else {
+            priceNum = item.price;
+        }
+        
+        total += priceNum;
+
+        let html = `
+        <div class="cart-item-row">
+            <div class="item-product">
+                <img src="${item.img}" class="item-img">
+                <div class="item-details">
+                    <h4>${item.name}</h4>
+                    <span>ตัวเลือก: ปกติ</span>
+                </div>
+            </div>
+            <div class="item-price">฿${priceNum.toLocaleString()}</div>
+            <div class="item-action">
+                <button class="btn-delete" onclick="removeItem(${index})">ลบ</button>
+            </div>
+        </div>
+        `;
+        container.innerHTML += html;
+    });
+
+    summaryCount.innerText = cart.length;
+    summarySubtotal.innerText = "฿" + total.toLocaleString();
+    summaryTotal.innerText = "฿" + total.toLocaleString();
+}
+
+function removeItem(index) {
+    let cart = JSON.parse(localStorage.getItem("petCart")) || [];
+    cart.splice(index, 1);
+    localStorage.setItem("petCart", JSON.stringify(cart));
+    displayCart();
+}
+
+function clearCart() {
+    if(confirm("คุณต้องการลบสินค้าทั้งหมดใช่หรือไม่?")){
+        localStorage.removeItem("petCart");
+        displayCart();
+    }
+}
+
+function goToPayment(){
+    let cart = JSON.parse(localStorage.getItem("petCart")) || [];
+    if(cart.length === 0) {
+        alert("กรุณาเลือกสินค้าก่อนชำระเงิน");
+        return;
+    }
+    window.location.href = "Make payment.html";
+}
+
+
+window.onload = function() {
+    MM_preloadImages('../Home/2.png','../Search/2.png','../products/2.png','../new products/2.png','../promotion/2.png','../Contact us/2.png','../review (1)/2.png','../Favorites/2.png','../Shopping cart/2.png','../PayMent (1)/2.png');
+    displayCart();
+};
+</script>
+</head>
+
+<body>
+
+<table><tr><td><a href="index.html"><img src="Shopping Cart.png" width="1464" height="200" class="img-effect"></a></td></tr></table>
+
+<table>
+  <tr>
+    <td><a href="index.html" onMouseOver="MM_swapImage('m1','','../Home/2.png',1)" onMouseOut="MM_swapImgRestore()"><img src="../Home/1.png" id="m1" width="140" height="40" class="img-effect"></a></td>
+    <td><a href="Search.html" onMouseOver="MM_swapImage('m2','','../Search/2.png',1)" onMouseOut="MM_swapImgRestore()"><img src="../Search/1.png" id="m2" width="140" height="40" class="img-effect"></a></td>
+    <td><a href="Products.html" onMouseOver="MM_swapImage('m3','','../products/2.png',1)" onMouseOut="MM_swapImgRestore()"><img src="../products/1.png" id="m3" width="140" height="40" class="img-effect"></a></td>
+    <td><a href="New Products.html" onMouseOver="MM_swapImage('m4','','../new products/2.png',1)" onMouseOut="MM_swapImgRestore()"><img src="../new products/1.png" id="m4" width="140" height="40" class="img-effect"></a></td>
+    <td><a href="Promotion.html" onMouseOver="MM_swapImage('m5','','../promotion/2.png',1)" onMouseOut="MM_swapImgRestore()"><img src="../promotion/1.png" id="m5" width="140" height="40" class="img-effect"></a></td>
+    <td><a href="Contact us.html" onMouseOver="MM_swapImage('m6','','../Contact us/2.png',1)" onMouseOut="MM_swapImgRestore()"><img src="../Contact us/1.png" id="m6" width="140" height="40" class="img-effect"></a></td>
+    <td><a href="Review.html" onMouseOver="MM_swapImage('m7','','../review (1)/2.png',1)" onMouseOut="MM_swapImgRestore()"><img src="../review (1)/1.png" id="m7" width="140" height="40" class="img-effect"></a></td>
+    <td><a href="Favorites.html" onMouseOver="MM_swapImage('m8','','../Favorites/2.png',1)" onMouseOut="MM_swapImgRestore()"><img src="../Favorites/1.png" id="m8" width="140" height="40" class="img-effect"></a></td>
+    <td><a href="Shopping Cart.html" onMouseOver="MM_swapImage('m9','','../Shopping cart/2.png',1)" onMouseOut="MM_swapImgRestore()"><img src="../Shopping cart/1.png" id="m9" width="140" height="40" class="img-effect"></a></td>
+    <td><a href="Make payment.html" onMouseOver="MM_swapImage('m10','','../PayMent (1)/2.png',1)" onMouseOut="MM_swapImgRestore()"><img src="../PayMent (1)/1.png" id="m10" width="140" height="40" class="img-effect"></a></td>
+  </tr>
+</table>
+
+<div class="main-wrapper">
+    <div class="cart-title">
+        🛒 รถเข็นของฉัน
+    </div>
+
+    <div class="shopee-layout">
+        
+        <div class="cart-left-section">
+            <div class="cart-items-panel">
+                <div class="cart-header">
+                    <div>สินค้า</div>
+                    <div>ราคาต่อหน่วย</div>
+                    <div style="text-align:right;">แอคชั่น</div>
+                </div>
+                
+                <div id="cart-items-area">
+                    </div>
+            </div>
+        </div>
+
+        <div class="cart-right-section">
+            <div class="cart-summary-panel">
+                <h3 style="margin-top:0;">สรุปคำสั่งซื้อ</h3>
+                
+                <div class="summary-row">
+                    <span>ยอดรวม (<span id="summary-count">0</span> ชิ้น)</span>
+                    <span id="summary-subtotal">฿0</span>
+                </div>
+                
+                <div class="summary-row">
+                    <span>ค่าจัดส่ง</span>
+                    <span>ฟรี</span>
+                </div>
+
+                <div class="summary-row total">
+                    <span>ยอดรวมสุทธิ</span>
+                    <span id="summary-total">฿0</span>
+                </div>
+
+                <button class="btn-checkout" onclick="goToPayment()">ดำเนินการชำระเงิน</button>
+                <button class="btn-clear" onclick="clearCart()">ลบทั้งหมด</button>
+            </div>
+        </div>
+
+    </div>
+</div>
+
+</body>
+</html>

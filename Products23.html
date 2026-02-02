@@ -1,0 +1,252 @@
+<!doctype html>
+<html>
+<head>
+<meta charset="utf-8">
+<title>PetHome</title>
+
+<style>
+body {
+    background: linear-gradient(135deg,#F3E5C7,#E1C699,#CFAE70);
+    background-attachment: fixed;
+    font-family: 'Segoe UI', Arial, sans-serif;
+    margin: 0;
+}
+
+table { margin: auto; }
+td { padding: 10px; text-align: center; }
+
+.img-effect {
+    border-radius: 20px;
+    box-shadow: 0 8px 20px rgba(0,0,0,0.35);
+    transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+    cursor: pointer;
+}
+
+.img-effect:hover {
+    transform: translateY(-8px) scale(1.05);
+    box-shadow: 0 14px 30px rgba(0,0,0,0.5);
+}
+
+.product-detail-container {
+    max-width: 1000px;
+    margin: 40px auto;
+    background: rgba(255, 255, 255, 0.9);
+    backdrop-filter: blur(10px);
+    border-radius: 40px;
+    box-shadow: 0 25px 50px rgba(0,0,0,0.2);
+    padding: 50px;
+    display: flex;
+    gap: 60px;
+    align-items: center;
+    border: 1px solid rgba(255,255,255,0.4);
+    animation: floatUp 0.8s ease-out;
+}
+
+@keyframes floatUp {
+    from { opacity: 0; transform: translateY(40px); }
+    to { opacity: 1; transform: translateY(0); }
+}
+
+.product-image-box img {
+    width: 380px;
+    border-radius: 30px;
+    box-shadow: 0 15px 35px rgba(139, 110, 75, 0.4);
+    transition: 0.5s ease;
+}
+
+.product-image-box:hover img { transform: scale(1.03); }
+
+.product-info-content { flex: 1; text-align: left; }
+
+.product-info-content h1 {
+    font-size: 38px;
+    color: #5d4037;
+    margin-bottom: 15px;
+    font-weight: 800;
+}
+
+.product-info-content p {
+    font-size: 1.1rem;
+    color: #6d4c41;
+    line-height: 1.8;
+    margin-bottom: 25px;
+    background: rgba(255, 249, 240, 0.7);
+    padding: 20px;
+    border-radius: 20px;
+    border-left: 5px solid #8b6e4b;
+}
+
+.price-tag {
+    font-size: 42px;
+    color: #E74C3C;
+    font-weight: 900;
+    margin-bottom: 35px;
+    display: block;
+}
+
+.action-buttons-group { display: flex; gap: 15px; flex-wrap: wrap; }
+
+.custom-btn {
+    padding: 15px 30px;
+    border-radius: 50px;
+    font-size: 1rem;
+    font-weight: bold;
+    text-decoration: none;
+    color: white;
+    transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+    text-align: center;
+    min-width: 140px;
+    box-shadow: 0 8px 15px rgba(0,0,0,0.1);
+    cursor: pointer;
+    border: none;
+    display: inline-block;
+}
+
+.custom-btn:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 12px 25px rgba(0,0,0,0.2);
+}
+
+.btn-buy-now { background: linear-gradient(45deg, #2ecc71, #27ae60); }
+.btn-add-cart { background: linear-gradient(45deg, #f1c40f, #f39c12); }
+.btn-favorite { background: #fff; color: #e74c3c; border: 2px solid #e74c3c; min-width: 60px; font-size: 20px; }
+.btn-go-back { background: #8b6e4b; }
+</style>
+
+<script>
+function MM_swapImgRestore() {
+  var i,x,a=document.MM_sr;
+  for(i=0;a&&i<a.length&&(x=a[i])&&x.oSrc;i++) x.src=x.oSrc;
+}
+function MM_preloadImages() {
+  var d=document; if(d.images){ if(!d.MM_p) d.MM_p=new Array();
+    var i,j=d.MM_p.length,a=MM_preloadImages.arguments; for(i=0; i<a.length; i++)
+    if (a[i].indexOf("#")!=0){ d.MM_p[j]=new Image; d.MM_p[j++].src=a[i];}}
+}
+function MM_findObj(n, d) {
+  var p,i,x; if(!d) d=document; if((p=n.indexOf("?"))>0&&parent.frames.length) {
+    d=parent.frames[n.substring(p+1)].document; n=n.substring(0,p);}
+  if(!(x=d[n])&&d.all) x=d.all[n]; for (i=0;!x&&i<d.forms.length;i++) x=d.forms[i][n];
+  if(!x && d.getElementById) x=d.getElementById(n); return x;
+}
+function MM_swapImage() {
+  var i,j=0,x,a=MM_swapImage.arguments; document.MM_sr=new Array; for(i=0;i<(a.length-2);i+=3)
+   if ((x=MM_findObj(a[i]))!=null){document.MM_sr[j++]=x; if(!x.oSrc) x.oSrc=x.src; x.src=a[i+2];}
+}
+
+function addToCart(btn){
+    const product = {
+        id: btn.dataset.id,
+        name: btn.dataset.name,
+        price: btn.dataset.price,
+        img: btn.dataset.img
+    };
+    let cart = JSON.parse(localStorage.getItem("petCart")) || [];
+    if(cart.find(item => item.id === product.id)){
+        alert("สินค้านี้อยู่ในตะกร้าแล้ว 🐾");
+        return;
+    }
+    cart.push(product);
+    localStorage.setItem("petCart", JSON.stringify(cart));
+    alert("เพิ่มสินค้าลงตะกร้าแล้ว 🛒");
+    window.location.href = "Shopping Cart.html";
+}
+
+function buyNow(btn){
+    const product = {
+        id: btn.dataset.id,
+        name: btn.dataset.name,
+        price: btn.dataset.price,
+        img: btn.dataset.img
+    };
+    let cart = JSON.parse(localStorage.getItem("petCart")) || [];
+    if(!cart.find(item => item.id === product.id)){
+        cart.push(product);
+        localStorage.setItem("petCart", JSON.stringify(cart));
+    }
+    window.location.href = "Make payment.html";
+}
+
+function addToFavorites(btn){
+    const product = {
+        id: btn.dataset.id,
+        name: btn.dataset.name,
+        price: btn.dataset.price,
+        img: btn.dataset.img
+    };
+    let fav = JSON.parse(localStorage.getItem("petFavorites")) || [];
+    if(fav.find(item => item.id === product.id)){
+        alert("สินค้านี้อยู่ในรายการโปรดแล้ว ❤️");
+        return;
+    }
+    fav.push(product);
+    localStorage.setItem("petFavorites", JSON.stringify(fav));
+    alert("เพิ่มลงรายการโปรดแล้ว ❤️");
+    window.location.href = "Favorites.html";
+}
+</script>
+</head>
+
+<body onLoad="MM_preloadImages('../Home/2.png','../Search/2.png','../products/2.png','../new products/2.png','../promotion/2.png','../Contact us/2.png','../review (1)/2.png','../Favorites/2.png','../Shopping cart/2.png','../PayMent (1)/2.png')">
+
+<header>
+    <table><tr><td><a href="index.html"><img src="Products.png" width="1464" height="200" class="img-effect"></a></td></tr></table>
+
+    <table>
+      <tr>
+        <td><a href="index.html" onMouseOver="MM_swapImage('m1','','../Home/2.png',1)" onMouseOut="MM_swapImgRestore()"><img src="../Home/1.png" id="m1" width="140" height="40" class="img-effect"></a></td>
+        <td><a href="Search.html" onMouseOver="MM_swapImage('m2','','../Search/2.png',1)" onMouseOut="MM_swapImgRestore()"><img src="../Search/1.png" id="m2" width="140" height="40" class="img-effect"></a></td>
+        <td><a href="Products.html" onMouseOver="MM_swapImage('m3','','../products/2.png',1)" onMouseOut="MM_swapImgRestore()"><img src="../products/1.png" id="m3" width="140" height="40" class="img-effect"></a></td>
+        <td><a href="New Products.html" onMouseOver="MM_swapImage('m4','','../new products/2.png',1)" onMouseOut="MM_swapImgRestore()"><img src="../new products/1.png" id="m4" width="140" height="40" class="img-effect"></a></td>
+        <td><a href="Promotion.html" onMouseOver="MM_swapImage('m5','','../promotion/2.png',1)" onMouseOut="MM_swapImgRestore()"><img src="../promotion/1.png" id="m5" width="140" height="40" class="img-effect"></a></td>
+        <td><a href="Contact us.html" onMouseOver="MM_swapImage('m6','','../Contact us/2.png',1)" onMouseOut="MM_swapImgRestore()"><img src="../Contact us/1.png" id="m6" width="140" height="40" class="img-effect"></a></td>
+        <td><a href="Review.html" onMouseOver="MM_swapImage('m7','','../review (1)/2.png',1)" onMouseOut="MM_swapImgRestore()"><img src="../review (1)/1.png" id="m7" width="140" height="40" class="img-effect"></a></td>
+        <td><a href="Favorites.html" onMouseOver="MM_swapImage('m8','','../Favorites/2.png',1)" onMouseOut="MM_swapImgRestore()"><img src="../Favorites/1.png" id="m8" width="140" height="40" class="img-effect"></a></td>
+        <td><a href="Shopping Cart.html" onMouseOver="MM_swapImage('m9','','../Shopping cart/2.png',1)" onMouseOut="MM_swapImgRestore()"><img src="../Shopping cart/1.png" id="m9" width="140" height="40" class="img-effect"></a></td>
+        <td><a href="Make payment.html" onMouseOver="MM_swapImage('m10','','../PayMent (1)/2.png',1)" onMouseOut="MM_swapImgRestore()"><img src="../PayMent (1)/1.png" id="m10" width="140" height="40" class="img-effect"></a></td>
+      </tr>
+    </table>
+</header>
+
+<div class="product-detail-container">
+    <div class="product-image-box">
+        <img src="../New folder/23.jpg" alt="สุนัข ลูกสุนัขพันธุ์ไซร์ ฮักกี้">
+    </div>
+    <div class="product-info-content">
+        <h1>สุนัข ลูกสุนัขพันธุ์ไซร์ ฮักกี้</h1>
+        <p>น้องหมา เพช ผู้ อายุ 2เดือน</p>
+        <span class="price-tag">฿5,000</span>
+        <div class="action-buttons-group">
+            
+            <button class="custom-btn btn-buy-now"
+                data-id="p23"
+                data-name="สุนัข ลูกสุนัขพันธุ์ไซร์ ฮักกี้"
+                data-price="5000"
+                data-img="../New folder/23.jpg"
+                onclick="buyNow(this)">
+                🛒 BUY NOW
+            </button>
+
+            <button class="custom-btn btn-add-cart"
+                data-id="p23"
+                data-name="สุนัข ลูกสุนัขพันธุ์ไซร์ ฮักกี้"
+                data-price="5000"
+                data-img="../New folder/23.jpg"
+                onclick="addToCart(this)">
+                🧺 Add to Cart
+            </button>
+            <button class="custom-btn btn-favorite"
+                data-id="p23"
+                data-name="สุนัข ลูกสุนัขพันธุ์ไซร์ ฮักกี้"
+                data-price="5000"
+                data-img="../New folder/23.jpg"
+                onclick="addToFavorites(this)">
+                ❤️
+            </button>
+            <a href="Products.html" class="custom-btn btn-go-back">↩ Back</a>
+        </div>
+    </div>
+</div>
+
+</body>
+</html>
