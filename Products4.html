@@ -1,0 +1,264 @@
+<!doctype html>
+<html lang="th">
+<head>
+<meta charset="utf-8">
+<title>PetHome - ลูกแมวเปอร์เซีย</title>
+
+<style>
+body{
+    background: linear-gradient(135deg,#F3E5C7,#E1C699,#CFAE70);
+    background-attachment: fixed;
+    font-family: 'Segoe UI', Arial, sans-serif;
+    margin: 0;
+}
+table{margin:auto;}
+td, th{padding:10px;text-align:center;}
+
+.img-effect{
+    border-radius:20px;
+    box-shadow:0 8px 20px rgba(0,0,0,0.35);
+    transition:0.3s;
+    cursor:pointer;
+}
+.img-effect:hover{
+    transform:translateY(-8px) scale(1.05);
+    box-shadow:0 14px 30px rgba(0,0,0,0.5);
+}
+
+.product-detail{
+    max-width:1100px;
+    margin:40px auto;
+    background:rgba(255,255,255,0.85);
+    border-radius:30px;
+    box-shadow:0 20px 40px rgba(0,0,0,0.3);
+    padding:40px;
+    display:flex;
+    gap:50px;
+    align-items:center;
+    animation: slideIn 0.8s ease-out;
+}
+
+@keyframes slideIn {
+    from { opacity: 0; transform: translateX(-50px); }
+    to { opacity: 1; transform: translateX(0); }
+}
+
+.product-image img{
+    width:400px;
+    height: auto;
+    border-radius:20px;
+    box-shadow:0 15px 30px rgba(0,0,0,0.3);
+    object-fit: cover;
+}
+
+.product-info{ flex:1; text-align: left; }
+
+.product-info h2{
+    color:#5D4037;
+    border-bottom:3px solid #E1C699;
+    padding-bottom:10px;
+    display:inline-block;
+    margin-top: 20px;
+}
+
+.product-info p{
+    font-size:1.1rem;
+    line-height:1.8;
+    color:#4E342E;
+}
+
+.price{
+    font-size:2.5rem;
+    color:#D32F2F;
+    font-weight:bold;
+    margin:20px 0;
+    text-shadow:1px 1px 2px rgba(0,0,0,0.1);
+}
+
+.action-buttons{
+    display:flex;
+    gap:20px;
+    flex-wrap:wrap;
+}
+
+.btn{
+    text-decoration:none;
+    padding:12px 25px;
+    border-radius:30px;
+    color:white;
+    font-weight:bold;
+    transition:0.3s;
+    display:flex;
+    align-items:center;
+    gap:8px;
+    box-shadow:0 5px 15px rgba(0,0,0,0.2);
+    border: none;
+    font-size: 16px;
+    cursor: pointer;
+}
+
+.btn:hover{ transform:scale(1.05); }
+
+.btn-buy{ background:linear-gradient(45deg, #43A047, #66BB6A); }
+.btn-cart{ background:linear-gradient(45deg, #FFA000, #FFCA28); }
+.btn-fav{ background:white; color:#D32F2F; border:2px solid #D32F2F; }
+.btn-back{ background:#5D4037; }
+
+</style>
+
+<script>
+// ฟังก์ชันจัดการระบบ LocalStorage
+function addToCart(btn){
+    const product = {
+        id: btn.dataset.id,
+        name: btn.dataset.name,
+        price: btn.dataset.price,
+        img: btn.dataset.img
+    };
+
+    let cart = JSON.parse(localStorage.getItem("petCart")) || [];
+
+    if(cart.find(item => item.id === product.id)){
+        alert("สินค้านี้อยู่ในตะกร้าแล้ว 🐾");
+        return;
+    }
+
+    cart.push(product);
+    localStorage.setItem("petCart", JSON.stringify(cart));
+    alert("เพิ่มสินค้าลงตะกร้าแล้ว 🛒");
+    window.location.href = "Shopping Cart.html";
+}
+
+function buyNow(btn){
+    const product = {
+        id: btn.dataset.id,
+        name: btn.dataset.name,
+        price: btn.dataset.price,
+        img: btn.dataset.img
+    };
+
+    let cart = JSON.parse(localStorage.getItem("petCart")) || [];
+
+    if(!cart.find(item => item.id === product.id)){
+        cart.push(product);
+        localStorage.setItem("petCart", JSON.stringify(cart));
+    }
+
+    window.location.href = "Make payment.html";
+}
+
+function addToFavorites(btn){
+    const product = {
+        id: btn.dataset.id,
+        name: btn.dataset.name,
+        price: btn.dataset.price,
+        img: btn.dataset.img
+    };
+
+    let fav = JSON.parse(localStorage.getItem("petFavorites")) || [];
+
+    if(fav.find(item => item.id === product.id)){
+        alert("สินค้านี้อยู่ในรายการโปรดแล้ว ❤️");
+        return;
+    }
+
+    fav.push(product);
+    localStorage.setItem("petFavorites", JSON.stringify(fav));
+    alert("เพิ่มลงรายการโปรดแล้ว ❤️");
+    window.location.href = "Favorites.html";
+}
+</script>
+</head>
+
+<body>
+
+<table><tr><td><img src="Products.png" width="1465" height="200" class="img-effect"></td></tr></table>
+
+<table>
+<tr>
+<td><a href="index.html" onMouseOver="MM_swapImage('m1','','home2.png',1)" onMouseOut="MM_swapImgRestore()">
+<img src="home1.png" id="m1" class="img-effect"></a></td>
+
+<td><a href="Search.html" onMouseOver="MM_swapImage('m2','','search2.png',1)" onMouseOut="MM_swapImgRestore()">
+<img src="search1.png" id="m2" class="img-effect"></a></td>
+
+<td><a href="Products.html" onMouseOver="MM_swapImage('m3','','product2.png',1)" onMouseOut="MM_swapImgRestore()">
+<img src="product1.png" id="m3" class="img-effect"></a></td>
+
+<td><a href="New Products.html" onMouseOver="MM_swapImage('m4','','new2.png',1)" onMouseOut="MM_swapImgRestore()">
+<img src="new1.png" id="m4" class="img-effect"></a></td>
+
+<td><a href="Promotion.html" onMouseOver="MM_swapImage('m5','','promotion2.png',1)" onMouseOut="MM_swapImgRestore()">
+<img src="promotion1.png" id="m5" class="img-effect"></a></td>
+
+<td><a href="Contact us.html" onMouseOver="MM_swapImage('m6','','Contact2.png',1)" onMouseOut="MM_swapImgRestore()">
+<img src="Contact1.png" id="m6" class="img-effect"></a></td>
+
+<td><a href="Review.html" onMouseOver="MM_swapImage('m7','','review2.png',1)" onMouseOut="MM_swapImgRestore()">
+<img src="review1.png" id="m7" class="img-effect"></a></td>
+
+<td><a href="Favorites.html" onMouseOver="MM_swapImage('m8','','Favorites2.png',1)" onMouseOut="MM_swapImgRestore()">
+<img src="Favorites1.png" id="m8" class="img-effect"></a></td>
+
+<td><a href="Shopping Cart.html" onMouseOver="MM_swapImage('m9','','cart2.png',1)" onMouseOut="MM_swapImgRestore()">
+<img src="cart1.png" id="m9" class="img-effect"></a></td>
+
+<td><a href="Make payment.html" onMouseOver="MM_swapImage('m10','','payment2.png',1)" onMouseOut="MM_swapImgRestore()">
+<img src="payment1.png" id="m10" class="img-effect"></a></td>
+</tr>
+</table>
+
+<div class="product-detail">
+    <div class="product-image">
+        <img src="4.jpg" class="img-effect">
+    </div>
+
+    <div class="product-info">
+        <h2>คุณสมบัติเด่น</h2>
+        <p>สายพันธุ์ : เปอร์เซีย (Persian)</p>
+
+        <h2>รายละเอียดสินค้า</h2>
+        <p>
+        ลูกแมวเปอร์เซีย เกิดวันที่ 27/10/68<br>
+        สีซิลเวอร์ (Silver) เพศเมีย โครงสร้างสวย ขนฟูหนาแน่น<br>
+        🌟 สุขภาพแข็งแรง ร่าเริง กินอาหารเม็ดเก่ง<br>
+        🚽 ขนสวยสะอาด ฝึกใช้กระบะทรายเรียบร้อยแล้ว
+        </p>
+
+        <div class="price">฿2,900</div>
+
+        <div class="action-buttons">
+            <button class="btn btn-buy"
+                data-id="p4"
+                data-name="ลูกแมวเปอร์เซีย"
+                data-price="2900"
+                data-img="New folder/4.jpg"
+                onclick="buyNow(this)">
+                🛒 BUY NOW
+            </button>
+
+            <button class="btn btn-cart"
+                data-id="p4"
+                data-name="ลูกแมวเปอร์เซีย"
+                data-price="2900"
+                data-img="New folder/4.jpg"
+                onclick="addToCart(this)">
+                🧺 CART
+            </button>
+
+            <button class="btn btn-fav"
+                data-id="p4"
+                data-name="ลูกแมวเปอร์เซีย"
+                data-price="2900"
+                data-img="New folder/4.jpg"
+                onclick="addToFavorites(this)">
+                ❤️
+            </button>
+            
+            <a href="Products.html" class="btn btn-back">↩ BACK</a>
+        </div>
+    </div>
+</div>
+
+</body>
+</html>

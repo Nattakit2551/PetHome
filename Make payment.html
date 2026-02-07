@@ -1,0 +1,333 @@
+<!doctype html>
+<html lang="th">
+<head>
+    <meta charset="utf-8">
+    <title>PetHome - Payment Confirmation</title>
+    <link href="https://fonts.googleapis.com/css2?family=Kanit:wght@300;400;600&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    
+    <style>
+        body { background: #fdf8ef; font-family: 'Kanit', sans-serif; margin: 0; color: #5d4037; }
+        table { margin: auto; border-collapse: collapse; }
+        td { padding: 10px; text-align: center; }
+        .img-effect { border-radius: 20px; box-shadow: 0 8px 20px rgba(0,0,0,0.15); transition: 0.3s; cursor: pointer; }
+        .img-effect:hover { transform: translateY(-5px); }
+
+        .main-container {
+            max-width: 1200px;
+            margin: 40px auto;
+            display: grid;
+            grid-template-columns: 1.4fr 1.1fr;
+            gap: 30px;
+            padding: 0 20px;
+        }
+
+        .section-card {
+            background: #ffffff;
+            border-radius: 25px;
+            padding: 30px;
+            box-shadow: 0 10px 40px rgba(139, 110, 75, 0.1);
+            margin-bottom: 25px;
+        }
+
+        h3 { color: #8d6e63; font-weight: 600; border-bottom: 2px solid #f3e5c7; padding-bottom: 10px; margin-bottom: 20px; }
+
+        .product-list-item {
+            display: flex; gap: 15px; padding: 15px; background: #fff;
+            border-radius: 20px; border: 1px solid #f9f9f9; margin-bottom: 15px;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.02);
+            align-items: center;
+        }
+        .product-list-item img { width: 80px; height: 80px; object-fit: cover; border-radius: 12px; }
+        .product-info { flex: 1; display: flex; flex-direction: column; justify-content: center; }
+        .product-name { font-weight: 600; font-size: 1.1rem; color: #5d4037; }
+        .product-price { color: #cfae70; font-weight: bold; font-size: 1.1rem; }
+
+        .btn-delete-item {
+            font-size: 1.2rem; cursor: pointer; padding: 10px; border-radius: 50%;
+            transition: 0.2s; color: #e57373; background: #ffebee;
+            width: 40px; height: 40px; display: flex; align-items: center; justify-content: center;
+        }
+        .btn-delete-item:hover { background: #ffcdd2; transform: scale(1.1); color: #c62828; }
+
+        .summary-box { background: #fff8e1; padding: 25px; border-radius: 20px; text-align: center; margin-bottom: 20px; border: 1px dashed #ffe082; }
+
+        .btn-group { display: flex; gap: 15px; } 
+
+        .btn-confirm-order {
+            flex: 2; background: linear-gradient(135deg, #cfae70, #b8975d); color: white; border: none;
+            padding: 18px; border-radius: 50px; font-size: 1.2rem; font-weight: bold;
+            cursor: pointer; transition: 0.3s; box-shadow: 0 10px 20px rgba(207, 174, 112, 0.4);
+        }
+        .btn-confirm-order:hover { transform: translateY(-3px); box-shadow: 0 15px 30px rgba(207, 174, 112, 0.6); }
+
+        .btn-cancel-order {
+            flex: 1; background: #eceff1; color: #546e7a; border: none;
+            padding: 18px; border-radius: 50px; font-size: 1.1rem; font-weight: bold;
+            cursor: pointer; transition: 0.3s;
+        }
+        .btn-cancel-order:hover { background: #cfd8dc; color: #37474f; }
+
+        input, select, textarea {
+            width: 100%; padding: 15px; margin-bottom: 15px;
+            border: 1px solid #e0e0e0; border-radius: 15px; font-size: 16px; font-family: 'Kanit', sans-serif;
+            box-sizing: border-box; background: #fafafa; transition: 0.3s;
+        }
+        input:focus, textarea:focus, select:focus { outline: none; border-color: #cfae70; background: #fff; box-shadow: 0 0 0 4px rgba(207, 174, 112, 0.1); }
+
+        #payment-details { margin-top: 15px; padding: 20px; border: 2px dashed #cfae70; border-radius: 15px; text-align: center; background: #fffaf0; }
+        #qr-image { width: 180px; border-radius: 10px; margin: 10px 0; border: 4px solid #fff; box-shadow: 0 4px 10px rgba(0,0,0,0.1); }
+        
+        .bank-info-box { text-align: left; background: white; padding: 15px; border-radius: 15px; border: 1px solid #f3e5c7; margin-top: 10px; }
+        .bank-item { display: flex; align-items: center; gap: 12px; margin-bottom: 12px; }
+        .bank-logo { width: 35px; height: 35px; border-radius: 8px; display: flex; align-items: center; justify-content: center; color: white; font-weight: bold; font-size: 11px; }
+        .kb-bank { background: #138044; }
+        .ktb-bank { background: #00A1E0; }
+        .bbl-bank { background: #1E3E8E; }
+
+        #preview-container img { max-width: 150px; border-radius: 10px; margin-top: 10px; border: 1px solid #ddd; }
+
+        .overlay { position: fixed; inset: 0; background: rgba(62, 39, 35, 0.7); backdrop-filter: blur(5px); display: none; justify-content: center; align-items: center; z-index: 1000; animation: fadeIn 0.3s ease-out; }
+        .popup { background: white; padding: 0; border-radius: 30px; text-align: center; width: 90%; max-width: 450px; box-shadow: 0 25px 50px rgba(0,0,0,0.3); overflow: hidden; animation: scaleIn 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275); position: relative; }
+        .popup-header-box { padding: 30px 20px 10px; }
+        .modal-icon-box { width: 80px; height: 80px; border-radius: 50%; margin: 0 auto 15px; display: flex; align-items: center; justify-content: center; font-size: 40px; }
+        .theme-warning { background: #fff8e1; color: #FFB300; }
+        .theme-danger { background: #ffebee; color: #e53935; }
+        .popup-title { font-size: 24px; font-weight: bold; color: #5d4037; margin: 10px 0; }
+        .popup-desc { color: #8d6e63; font-size: 16px; margin-bottom: 20px; line-height: 1.5; padding: 0 20px;}
+        .popup-actions { display: flex; gap: 10px; padding: 20px; background: #fff; }
+        .btn-modal-cancel { flex: 1; background: #f5f5f5; color: #757575; border: none; padding: 15px; border-radius: 15px; font-size: 16px; font-weight: bold; cursor: pointer; transition: 0.2s; }
+        .btn-modal-confirm { flex: 1; background: #cfae70; color: white; border: none; padding: 15px; border-radius: 15px; font-size: 16px; font-weight: bold; cursor: pointer; box-shadow: 0 5px 15px rgba(207, 174, 112, 0.4); transition: 0.2s; }
+        .btn-modal-danger { flex: 1; background: #e53935; color: white; border: none; padding: 15px; border-radius: 15px; font-size: 16px; font-weight: bold; cursor: pointer; box-shadow: 0 5px 15px rgba(229, 57, 53, 0.4); transition: 0.2s; }
+        .popup-success-header { background: linear-gradient(135deg, #66BB6A, #43A047); padding: 30px 20px; color: white; border-radius: 30px 30px 50% 50% / 30px 30px 20px 20px; }
+        .checkmark-circle { width: 80px; height: 80px; position: relative; display: inline-block; vertical-align: top; margin-bottom: 10px; }
+        .checkmark-circle .background { width: 80px; height: 80px; border-radius: 50%; background: #fff; position: absolute; left: 0; top: 0; box-shadow: 0 10px 30px rgba(0,0,0,0.2); }
+        .checkmark-circle .checkmark { border-radius: 5px; display: block; position: absolute; opacity: 0; width: 57px; height: 57px; top: 18px; left: 16px; border-right: 5px solid #43A047; border-top: 5px solid #43A047; transform: scaleX(-1) rotate(135deg); transform-origin: left top; animation: checkmark-show 0.6s 0.3s forwards; }
+        .receipt-box { background: #f8f9fa; border: 1px dashed #cfd8dc; border-radius: 15px; padding: 20px; margin: 20px; text-align: left; position: relative; }
+        .customer-info-section { font-size: 0.95rem; color: #4e342e; margin-bottom: 15px; padding-bottom: 10px; border-bottom: 1px dashed #cfd8dc; line-height: 1.6; }
+        .receipt-row { display: flex; justify-content: space-between; margin-bottom: 8px; font-size: 0.95rem; color: #555; }
+        .receipt-row.total { font-weight: bold; color: #333; font-size: 1.2rem; margin-top: 15px; border-top: 2px dashed #ddd; padding-top: 10px; }
+        .btn-finish { width: 90%; padding: 16px; border-radius: 50px; border: none; background: #5d4037; color: white; font-size: 1.1rem; font-weight: bold; cursor: pointer; margin-bottom: 25px; transition: 0.3s; box-shadow: 0 8px 20px rgba(93, 64, 55, 0.3); }
+
+        @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
+        @keyframes scaleIn { from { transform: scale(0.9); opacity: 0; } to { transform: scale(1); opacity: 1; } }
+        @keyframes checkmark-show { 0% { opacity: 0; width: 0; height: 0; } 50% { opacity: 1; width: 15px; height: 0; } 100% { opacity: 1; width: 25px; height: 45px; } }
+    </style>
+</head>
+<body onLoad="MM_preloadImages('Home/2.png','Search/2.png','products/2.png','new products/2.png','promotion/2.png','Contact us/2.png','review (1)/2.png','Favorites/2.png','Shopping cart/2.png','PayMent (1)/2.png')">
+
+    <table><tr><td><img src="Make payment.png" width="1400" height="200" class="img-effect"></td></tr></table>
+    
+<table>
+<tr>
+<td><a href="index.html" onMouseOver="MM_swapImage('m1','','home2.png',1)" onMouseOut="MM_swapImgRestore()">
+<img src="home1.png" id="m1" class="img-effect"></a></td>
+
+<td><a href="Search.html" onMouseOver="MM_swapImage('m2','','search2.png',1)" onMouseOut="MM_swapImgRestore()">
+<img src="search1.png" id="m2" class="img-effect"></a></td>
+
+<td><a href="Products.html" onMouseOver="MM_swapImage('m3','','product2.png',1)" onMouseOut="MM_swapImgRestore()">
+<img src="product1.png" id="m3" class="img-effect"></a></td>
+
+<td><a href="New Products.html" onMouseOver="MM_swapImage('m4','','new2.png',1)" onMouseOut="MM_swapImgRestore()">
+<img src="new1.png" id="m4" class="img-effect"></a></td>
+
+<td><a href="Promotion.html" onMouseOver="MM_swapImage('m5','','promotion2.png',1)" onMouseOut="MM_swapImgRestore()">
+<img src="promotion1.png" id="m5" class="img-effect"></a></td>
+
+<td><a href="Contact us.html" onMouseOver="MM_swapImage('m6','','Contact2.png',1)" onMouseOut="MM_swapImgRestore()">
+<img src="Contact1.png" id="m6" class="img-effect"></a></td>
+
+<td><a href="Review.html" onMouseOver="MM_swapImage('m7','','review2.png',1)" onMouseOut="MM_swapImgRestore()">
+<img src="review1.png" id="m7" class="img-effect"></a></td>
+
+<td><a href="Favorites.html" onMouseOver="MM_swapImage('m8','','Favorites2.png',1)" onMouseOut="MM_swapImgRestore()">
+<img src="Favorites1.png" id="m8" class="img-effect"></a></td>
+
+<td><a href="Shopping Cart.html" onMouseOver="MM_swapImage('m9','','cart2.png',1)" onMouseOut="MM_swapImgRestore()">
+<img src="cart1.png" id="m9" class="img-effect"></a></td>
+
+<td><a href="Make payment.html" onMouseOver="MM_swapImage('m10','','payment2.png',1)" onMouseOut="MM_swapImgRestore()">
+<img src="payment1.png" id="m10" class="img-effect"></a></td>
+</tr>
+</table>
+
+    <div class="main-container">
+        <div class="checkout-left">
+            <div class="section-card">
+                <h3>📍 ข้อมูลจัดส่ง</h3>
+                <input type="text" id="custName" placeholder="ชื่อ - นามสกุล *">
+                <input type="tel" id="custPhone" placeholder="เบอร์โทรศัพท์ *">
+                <textarea id="custAddr" rows="3" placeholder="ที่อยู่จัดส่ง *"></textarea>
+            </div>
+            
+            <div class="section-card">
+                <h3>💳 วิธีชำระเงิน</h3>
+                <select id="payMethod" onchange="togglePaymentUI()">
+                    <option value="promptpay">1. โอนผ่าน QR PromptPay (สแกนจ่าย)</option>
+                    <option value="bank_transfer">2. โอนผ่านบัญชีธนาคาร (กสิกร, กรุงไทย, กรุงเทพ)</option>
+                    <option value="cod">3. เก็บเงินปลายทาง (COD)</option>
+                </select>
+
+                <div id="payment-details">
+                    <div id="qr-section">
+                        <p style="font-weight:600; margin-bottom:5px;">สแกนเพื่อจ่ายด้วย QR PromptPay</p>
+                        <img src="" id="qr-image">
+                    </div>
+
+                    <div id="bank-section" style="display:none;">
+                        <p style="font-weight:600; margin-top:0;">เลือกโอนเข้าบัญชีธนาคาร</p>
+                        <div class="bank-info-box">
+                            <div class="bank-item">
+                                <div class="bank-logo kb-bank">KBANK</div>
+                                <div><strong>ธ.กสิกรไทย:</strong> 012-3-45678-9<br><small>บจก. เพ็ทโฮม</small></div>
+                            </div>
+                            <div class="bank-item">
+                                <div class="bank-logo ktb-bank">KTB</div>
+                                <div><strong>ธ.กรุงไทย:</strong> 987-6-54321-0<br><small>บจก. เพ็ทโฮม</small></div>
+                            </div>
+                            <div class="bank-item">
+                                <div class="bank-logo bbl-bank">BBL</div>
+                                <div><strong>ธ.กรุงเทพ:</strong> 123-4-56789-0<br><small>บจก. เพ็ทโฮม</small></div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div id="slip-upload-area">
+                        <div style="background: #E53935; color: #fff; padding: 10px; border-radius: 10px; margin: 15px 0;">
+                            ยอดโอนที่ต้องชำระ: ฿ <span id="transfer-amount">0</span>
+                        </div>
+                        <p style="font-size:0.85rem; color:#8d6e63;">แนบสลิปเพื่อยืนยันการโอน</p>
+                        <input type="file" id="slip-upload" accept="image/*" onchange="previewSlip(this)">
+                        <div id="preview-container" style="display:none;"><img id="slip-preview" src="#"></div>
+                    </div>
+                    
+                    <div id="cod-section" style="display:none; padding: 20px;">
+                        <i class="fas fa-truck" style="font-size: 3rem; color: #cfae70;"></i>
+                        <p style="margin-top:10px;">ชำระเงินเมื่อได้รับสินค้า</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="checkout-right">
+            <div class="section-card">
+                <h3>📋 รายการสินค้า</h3>
+                <div id="product-list-container"></div>
+                <div class="summary-box">
+                    <div style="color:#888; font-size: 0.9rem;">ยอดรวมทั้งหมด</div>
+                    <div style="font-size: 2.5rem; font-weight: bold; color: #cfae70;">฿ <span id="grand-total">0</span></div>
+                </div>
+                
+                <div class="btn-group">
+                    <button class="btn-cancel-order" onclick="cancelOrder()">ยกเลิก</button>
+                    <button class="btn-confirm-order" onclick="askBeforeConfirm()">ยืนยันสั่งซื้อ</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="overlay" id="confirmPopup"><div class="popup"><div class="popup-header-box theme-warning"><div class="modal-icon-box" style="background:#fff3e0; color:#ffb300;"><i class="fas fa-exclamation-triangle"></i></div></div><div class="popup-title">ยืนยันคำสั่งซื้อ?</div><div class="popup-desc">คุณต้องการยืนยันการสั่งซื้อสินค้าใช่หรือไม่?</div><div class="popup-actions"><button class="btn-modal-cancel" onclick="closeConfirm()">ยกเลิก</button><button class="btn-modal-confirm" onclick="realConfirm()">ยืนยัน</button></div></div></div>
+    <div class="overlay" id="cancelPopup"><div class="popup"><div class="popup-header-box theme-danger"><div class="modal-icon-box" style="background:#ffebee; color:#e53935;"><i class="fas fa-trash-alt"></i></div></div><div class="popup-title">ยกเลิก?</div><div class="popup-desc">คุณต้องการยกเลิกคำสั่งซื้อนี้ใช่หรือไม่?</div><div class="popup-actions"><button class="btn-modal-cancel" onclick="closeCancel()">กลับไปแก้ไข</button><button class="btn-modal-danger" onclick="realCancel()">ใช่, ยกเลิก</button></div></div></div>
+    <div class="overlay" id="successPopup"><div class="popup"><div class="popup-success-header"><div class="checkmark-circle"><div class="background"></div><div class="checkmark"></div></div><h2 style="margin: 0; font-size: 24px;">สั่งซื้อสำเร็จ!</h2><div id="order-id-display" style="font-size:14px; margin-top:5px; opacity:0.9;"></div></div><div class="receipt-box" id="receipt-content"></div><button class="btn-finish" onclick="finishOrder()">ตกลงและดูประวัติ</button></div></div>
+
+    <script>
+        function MM_swapImgRestore(){var i,x,a=document.MM_sr;for(i=0;a&&i<a.length&&(x=a[i])&&x.oSrc;i++)x.src=x.oSrc;}
+        function MM_preloadImages(){var d=document;if(d.images){if(!d.MM_p)d.MM_p=new Array();var i,j=d.MM_p.length,a=MM_preloadImages.arguments;for(i=0;i<a.length;i++)if(a[i].indexOf("#")!=0){d.MM_p[j]=new Image;d.MM_p[j++].src=a[i];}}}
+        function MM_findObj(n,d){var p,i,x;if(!d)d=document;if((p=n.indexOf("?"))>0&&parent.frames.length){d=parent.frames[n.substring(p+1)].document;n=n.substring(0,p);}if(!(x=d[n])&&d.all)x=d.all[n];for(i=0;!x&&i<d.forms.length;i++)x=d.forms[i][n];if(!x&&d.getElementById)x=d.getElementById(n);return x;}
+        function MM_swapImage(){var i,j=0,x,a=MM_swapImage.arguments;document.MM_sr=new Array;for(i=0;i<(a.length-2);i+=3)if((x=MM_findObj(a[i]))!=null){document.MM_sr[j++]=x;if(!x.oSrc)x.oSrc=x.src;x.src=a[i+2];}}
+
+        function togglePaymentUI() {
+            const method = document.getElementById("payMethod").value;
+            const qrSection = document.getElementById("qr-section");
+            const bankSection = document.getElementById("bank-section");
+            const slipArea = document.getElementById("slip-upload-area");
+            const codSection = document.getElementById("cod-section");
+
+            qrSection.style.display = (method === "promptpay") ? "block" : "none";
+            bankSection.style.display = (method === "bank_transfer") ? "block" : "none";
+            slipArea.style.display = (method === "promptpay" || method === "bank_transfer") ? "block" : "none";
+            codSection.style.display = (method === "cod") ? "block" : "none";
+        }
+
+        function previewSlip(input) {
+            const preview = document.getElementById('slip-preview');
+            const container = document.getElementById('preview-container');
+            if (input.files && input.files[0]) {
+                const reader = new FileReader();
+                reader.onload = (e) => { preview.src = e.target.result; container.style.display = 'block'; }
+                reader.readAsDataURL(input.files[0]);
+            }
+        }
+
+        function displayOrder() {
+            const cart = JSON.parse(localStorage.getItem("petCart")) || [];
+            const listContainer = document.getElementById("product-list-container");
+            const totalDisplay = document.getElementById("grand-total");
+            const transferDisplay = document.getElementById("transfer-amount");
+            const qrImage = document.getElementById("qr-image");
+
+            let total = 0;
+            let html = "";
+            cart.forEach((item, index) => {
+                let price = parseInt(item.price.toString().replace(/[^0-9]/g, "")) || 0;
+                total += price;
+                html += `
+                <div class="product-list-item">
+                    <img src="${item.img}">
+                    <div class="product-info"><div class="product-name">${item.name}</div><div class="product-price">฿ ${price.toLocaleString()}</div></div>
+                    <div class="btn-delete-item" onclick="removeItem(${index})">🗑️</div>
+                </div>`;
+            });
+
+            listContainer.innerHTML = html || "<p style='text-align:center;'>ไม่มีสินค้าในตะกร้า</p>";
+            totalDisplay.innerText = total.toLocaleString();
+            transferDisplay.innerText = total.toLocaleString();
+            qrImage.src = `https://promptpay.io/0812345678/${total}.png`;
+        }
+
+        function removeItem(index) {
+            let cart = JSON.parse(localStorage.getItem("petCart")) || [];
+            cart.splice(index, 1);
+            localStorage.setItem("petCart", JSON.stringify(cart));
+            displayOrder();
+        }
+
+        function askBeforeConfirm() {
+            const cart = JSON.parse(localStorage.getItem("petCart")) || [];
+            if(cart.length === 0) { alert("ไม่มีสินค้าในตะกร้า"); return; }
+            if(!document.getElementById("custName").value || !document.getElementById("custPhone").value || !document.getElementById("custAddr").value) { alert("กรุณากรอกข้อมูลจัดส่งให้ครบถ้วน"); return; }
+            const method = document.getElementById("payMethod").value;
+            const slip = document.getElementById("slip-upload").files[0];
+            if((method === "promptpay" || method === "bank_transfer") && !slip) { alert("กรุณาแนบสลิปหลักฐานการโอนเงิน"); return; }
+            document.getElementById("confirmPopup").style.display = "flex";
+        }
+
+        function realConfirm() { document.getElementById("confirmPopup").style.display = "none"; confirmPay(); }
+        function closeConfirm() { document.getElementById("confirmPopup").style.display = "none"; }
+        function cancelOrder() { document.getElementById("cancelPopup").style.display = "flex"; }
+        function closeCancel() { document.getElementById("cancelPopup").style.display = "none"; }
+        function realCancel() { localStorage.removeItem("petCart"); window.location.href = "index.html"; }
+
+        function confirmPay() {
+            const name = document.getElementById("custName").value;
+            const phone = document.getElementById("custPhone").value;
+            const addr = document.getElementById("custAddr").value;
+            const orderID = Math.random().toString(36).substr(2, 8).toUpperCase();
+            const total = document.getElementById("grand-total").innerText;
+            const cart = JSON.parse(localStorage.getItem("petCart")) || [];
+
+            document.getElementById("order-id-display").innerText = "Order ID: #" + orderID;
+            let itemsHtml = cart.map(item => `<div class="receipt-row"><span>${item.name}</span><span>${parseInt(item.price).toLocaleString()}</span></div>`).join("");
+            
+            document.getElementById("receipt-content").innerHTML = `
+                <div class="customer-info-section">คุณ ${name}<br>📞 ${phone}<br>📍 ${addr}</div>
+                ${itemsHtml}<div class="receipt-row total"><span>ยอดสุทธิ</span><span>฿ ${total}</span></div>`;
+            document.getElementById("successPopup").style.display = "flex";
+        }
+
+        function finishOrder() { localStorage.removeItem("petCart"); window.location.href = "profile.html"; }
+        document.addEventListener("DOMContentLoaded", () => { displayOrder(); togglePaymentUI(); });
+    </script>
+</body>
+</html>
