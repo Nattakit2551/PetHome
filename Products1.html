@@ -28,7 +28,6 @@ td { padding: 10px; text-align: center; }
     box-shadow: 0 14px 30px rgba(0,0,0,0.5);
 }
 
-/* Product Detail Container */
 .product-detail-container {
     max-width: 1000px;
     margin: 40px auto;
@@ -86,7 +85,6 @@ td { padding: 10px; text-align: center; }
     display: block;
 }
 
-/* Action Buttons */
 .action-buttons-group { display: flex; gap: 15px; flex-wrap: wrap; }
 
 .custom-btn {
@@ -117,7 +115,6 @@ td { padding: 10px; text-align: center; }
 </style>
 
 <script>
-// --- ส่วนการจัดการตะกร้าสินค้า ---
 function addToCart(btn){
     const product = {
         id: btn.dataset.id,
@@ -176,7 +173,6 @@ function addToFavorites(btn){
     window.location.href = "Favorites.html";
 }
 
-// --- ส่วน JavaScript ของ Adobe Dreamweaver (MM_Functions) ---
 function MM_swapImgRestore() {
   var i,x,a=document.MM_sr; for(i=0;a&&i<a.length&&(x=a[i])&&x.oSrc;i++) x.src=x.oSrc;
 }
